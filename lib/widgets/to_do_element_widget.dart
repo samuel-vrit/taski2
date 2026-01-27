@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:taski/constants/app_colors.dart';
 import 'package:taski/constants/app_constants.dart';
+import 'package:taski/providers/task_provider.dart';
 import 'package:taski/utils/task_model.dart';
 
 class TodoElementWidget extends StatelessWidget {
@@ -19,15 +21,17 @@ class TodoElementWidget extends StatelessWidget {
       backgroundColor: AppColors.backGroundGrey,
       childrenPadding: EdgeInsets.only(left: 60, top: 10, bottom: 10),
       leading: Checkbox(
-        value: false,
+        value: task.isDone,
         side: BorderSide(color: Colors.grey, width: 2),
-        onChanged: (val) {},
+        onChanged: (val) {
+          context.read<TaskProvider>().markAsDone(task.id);
+        },
       ),
-      title: Text(task.title, style: kBodyTextStyle),
+      title: Text('task.title', style: kBodyTextStyle),
       showTrailingIcon: false,
       children: [
         Text(
-          task.description,
+          'task.description',
           style: kBodyTextStyle.copyWith(color: AppColors.textColor02),
         ),
       ],

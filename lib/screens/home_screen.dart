@@ -13,6 +13,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final allTasks = context.watch<TaskProvider>().allTasks;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -46,14 +48,12 @@ class HomeScreen extends StatelessWidget {
               Expanded(
                 child: ListView.separated(
                   // shrinkWrap: true,
-                  itemCount: Provider.of<TaskProvider>(context).allTasks.length,
+                  itemCount: allTasks.length,
                   separatorBuilder: (_, __) {
                     return SizedBox(height: 16);
                   },
                   itemBuilder: (context, index) {
-                    return TodoElementWidget(
-                      task: Provider.of<TaskProvider>(context).allTasks[index],
-                    );
+                    return TodoElementWidget(task: allTasks[index]);
                   },
                 ),
               ),

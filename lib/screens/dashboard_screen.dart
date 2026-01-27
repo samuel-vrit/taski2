@@ -72,15 +72,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 }
 
-class CreateTaskSheet extends StatelessWidget {
-  const CreateTaskSheet({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(height: 300, color: Colors.red);
-  }
-}
-
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
 

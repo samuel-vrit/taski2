@@ -5,8 +5,24 @@ import 'package:taski/constants/app_constants.dart';
 import 'package:taski/providers/task_provider.dart';
 import 'package:taski/utils/task_model.dart';
 
-class AddTaskSheet extends StatelessWidget {
+class AddTaskSheet extends StatefulWidget {
   const AddTaskSheet({super.key});
+
+  @override
+  State<AddTaskSheet> createState() => _AddTaskSheetState();
+}
+
+class _AddTaskSheetState extends State<AddTaskSheet> {
+  final _titleController = TextEditingController();
+
+  final _descriptionController = TextEditingController();
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +33,7 @@ class AddTaskSheet extends StatelessWidget {
         children: [
           //Title
           TextField(
+            controller: _titleController,
             decoration: InputDecoration(
               hintText: 'Add a title',
               hintStyle: TextStyle(color: AppColors.textColor02),
@@ -38,6 +55,7 @@ class AddTaskSheet extends StatelessWidget {
                 child: TextField(
                   maxLines: 5,
                   // maxLength: 10,
+                  controller: _descriptionController,
                   decoration: InputDecoration(
                     hintText: 'Add a description',
                     hintStyle: TextStyle(color: AppColors.textColor02),
@@ -63,14 +81,11 @@ class AddTaskSheet extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              Provider.of<TaskProvider>(context, listen: false).addTask(
-                TaskModel(
-                  id: 100,
-                  title: 'New task',
-                  description: 'description',
-                  done: false,
-                ),
+              context.read<TaskProvider>().addTask(
+                title: _titleController.text.trim(),
+                description: _descriptionController.text,
               );
+              // Navigator.pop(context);
             },
             child: Text(
               'Create',

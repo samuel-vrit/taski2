@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taski/constants/app_colors.dart';
 import 'package:taski/constants/storage_constants.dart';
+import 'package:taski/screens/login_screen.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -29,6 +30,11 @@ class OnboardingScreen extends StatelessWidget {
             onPressed: () async {
               final prefs = await SharedPreferences.getInstance();
               await prefs.setBool(StorageConstants.firstTime, false);
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
             },
             child: Text(
               'Get started',
