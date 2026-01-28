@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:taski/constants/app_colors.dart';
 import 'package:taski/constants/app_constants.dart';
+import 'package:taski/providers/task_provider.dart';
+import 'package:taski/utils/task_model.dart';
 
 class DoneScreen extends StatelessWidget {
   const DoneScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final doneTasks = context.watch<TaskProvider>().doneTasks;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -20,7 +24,9 @@ class DoneScreen extends StatelessWidget {
                   GestureDetector(
                     onTap: () {},
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.read<TaskProvider>().deleteDoneTasks();
+                      },
                       child: Text(
                         'Delete all',
                         style: kBodyTextStyle.copyWith(color: Colors.red),
@@ -32,8 +38,9 @@ class DoneScreen extends StatelessWidget {
               SizedBox(height: 32),
               Expanded(
                 child: ListView.separated(
-                  itemCount: 7,
-                  itemBuilder: (context, index) => DeleteTaskElement(),
+                  itemCount: doneTasks.length,
+                  itemBuilder: (context, index) =>
+                      DeleteTaskElement(task: doneTasks[index]),
                   separatorBuilder: (context, index) => SizedBox(height: 10),
                 ),
               ),
@@ -46,7 +53,9 @@ class DoneScreen extends StatelessWidget {
 }
 
 class DeleteTaskElement extends StatelessWidget {
-  const DeleteTaskElement({super.key});
+  const DeleteTaskElement({required this.task, super.key});
+
+  final TaskModel task;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +74,7 @@ class DeleteTaskElement extends StatelessWidget {
           // ),
           SizedBox(width: 16),
           Text(
-            'Deleted task',
+            task.title,
             style: kBodyTextStyle.copyWith(color: AppColors.textColor02),
           ),
           Spacer(),

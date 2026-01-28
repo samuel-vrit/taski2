@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final allTasks = context.watch<TaskProvider>().allTasks;
-
+    final doneTasks = context.watch<TaskProvider>().doneTasks;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
               ),
               SizedBox(height: 5),
               Text(
-                'You’ve got 7 tasks to do.',
+                'You’ve got ${allTasks.length - doneTasks.length} tasks to do.',
                 style: GoogleFonts.urbanist(
                   fontWeight: FontWeight.normal,
                   fontSize: 16,
@@ -47,7 +47,6 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 32),
               Expanded(
                 child: ListView.separated(
-                  // shrinkWrap: true,
                   itemCount: allTasks.length,
                   separatorBuilder: (_, __) {
                     return SizedBox(height: 16);

@@ -24,14 +24,14 @@ class TodoElementWidget extends StatelessWidget {
         value: task.isDone,
         side: BorderSide(color: Colors.grey, width: 2),
         onChanged: (val) {
-          context.read<TaskProvider>().markAsDone(task.id);
+          context.read<TaskProvider>().toggleDone(task.id);
         },
       ),
-      title: Text('task.title', style: kBodyTextStyle),
+      title: Text(task.title, style: kBodyTextStyle),
       showTrailingIcon: false,
       children: [
         Text(
-          'task.description',
+          task.description,
           style: kBodyTextStyle.copyWith(color: AppColors.textColor02),
         ),
       ],
