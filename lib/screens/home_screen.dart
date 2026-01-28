@@ -13,7 +13,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final allTasks = context.watch<TaskProvider>().allTasks;
+    // final allTasks = context.watch<TaskProvider>().allTasks;
+    final allTasks = Provider.of<TaskProvider>(context).allTasks;
+
     final doneTasks = context.watch<TaskProvider>().doneTasks;
     return Scaffold(
       body: SafeArea(

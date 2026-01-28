@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:taski/constants/app_colors.dart';
 import 'package:taski/screens/done_screen.dart';
 import 'package:taski/screens/home_screen.dart';
+import 'package:taski/screens/login_screen.dart';
 import 'package:taski/screens/search_screen.dart';
 import 'package:taski/widgets/add_task_sheet.dart';
 
@@ -96,9 +97,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         SizedBox(width: 12),
-        CircleAvatar(
-          backgroundImage: NetworkImage(
-            'https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D',
+        GestureDetector(
+          onTap: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+            );
+          },
+          child: CircleAvatar(
+            backgroundImage: NetworkImage(
+              'https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D',
+            ),
           ),
         ),
         SizedBox(width: 26),

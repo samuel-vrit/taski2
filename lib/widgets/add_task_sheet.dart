@@ -85,7 +85,7 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                 title: _titleController.text.trim(),
                 description: _descriptionController.text,
               );
-              // Navigator.pop(context);
+              Navigator.pop(context);
             },
             child: Text(
               'Create',

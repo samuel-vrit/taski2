@@ -79,7 +79,9 @@ class DeleteTaskElement extends StatelessWidget {
           ),
           Spacer(),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              context.read<TaskProvider>().deleteTaskById(task.id);
+            },
             child: Icon(Icons.delete, color: Colors.red),
           ),
         ],
