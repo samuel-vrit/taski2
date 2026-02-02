@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:taski/constants/app_colors.dart';
 import 'package:taski/constants/app_constants.dart';
+import 'package:taski/providers/auth_provider.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -11,235 +14,240 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  String? email;
-  String? name;
+  // String? email;
+  // String? name;
+  //
+  // String? password;
+  // String? password2;
 
-  String? password;
-  String? password2;
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _password2Controller = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
 
   bool hidePassword = true;
   bool hidePassword2 = true;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Sign up', style: kHeadingTextStyle1)),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              // SizedBox(height: 10),
-              //Image
-              Image.asset(
-                "assets/app_logo.png",
-                fit: BoxFit.contain,
-                width: double.infinity,
-                height: 100,
-              ),
-              SizedBox(height: 27),
-              //welcome back
-              Text(
-                "Welcome  👋",
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 24),
-              ),
-              //today is new day
-              Text("Please enter your details to continue"),
-              SizedBox(height: 20),
-              Text('Name'),
-              SizedBox(height: 5),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: "Please enter your name",
-                  hintStyle: TextStyle(color: Color(0XFF8897AD)),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Color(0XFFD4D7E3)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Color(0XFF1D4AE9)),
-                  ),
-                ),
-                onChanged: (value) {
-                  name = value;
-                },
-              ),
-              SizedBox(height: 20),
-              Text('Email'),
-              SizedBox(height: 5),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: "Please enter your email",
-                  hintStyle: TextStyle(color: Color(0XFF8897AD)),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Color(0XFFD4D7E3)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Color(0XFF1D4AE9)),
-                  ),
-                ),
-                onChanged: (value) {
-                  email = value;
-                },
-              ),
-              SizedBox(height: 20),
-              Text('Password'),
-              SizedBox(height: 5),
-              TextField(
-                obscureText: hidePassword,
-                decoration: InputDecoration(
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      hidePassword = !hidePassword;
-                      setState(() {});
-                    },
-                    child: hidePassword
-                        ? Icon(Icons.visibility_off)
-                        : Icon(Icons.visibility),
-                  ),
-                  hintText: "Please enter your password",
-                  hintStyle: TextStyle(color: Color(0XFF8897AD)),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Color(0XFFD4D7E3)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Color(0XFF1D4AE9)),
-                  ),
-                ),
-                onChanged: (value) {
-                  password = value;
-                },
-              ),
-              SizedBox(height: 20),
-              Text('Confirm Password'),
-              SizedBox(height: 5),
-              TextField(
-                obscureText: hidePassword2,
-                decoration: InputDecoration(
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      hidePassword2 = !hidePassword2;
-                      setState(() {});
-                    },
-                    child: hidePassword2
-                        ? Icon(Icons.visibility_off)
-                        : Icon(Icons.visibility),
-                  ),
-                  hintText: "Confirm your password",
-                  hintStyle: TextStyle(color: Color(0XFF8897AD)),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Color(0XFFD4D7E3)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Color(0XFF1D4AE9)),
-                  ),
-                ),
-                onChanged: (value) {
-                  password2 = value;
-                },
-              ),
-              SizedBox(height: 20),
-              GestureDetector(
-                onTap: () {
-                  if (name == null) {
-                    Fluttertoast.showToast(
-                      msg: 'Please enter your name',
-                      backgroundColor: Colors.red,
-                    );
-                    return;
-                  }
-                  if (name!.isEmpty) {
-                    Fluttertoast.showToast(
-                      msg: 'Please enter your name',
-                      backgroundColor: Colors.red,
-                    );
-                    return;
-                  }
-                  if (email == null) {
-                    Fluttertoast.showToast(
-                      msg: 'Please enter your email',
-                      backgroundColor: Colors.red,
-                    );
-                    return;
-                  }
-                  if (email!.isEmpty) {
-                    Fluttertoast.showToast(
-                      msg: 'Please enter your email',
-                      backgroundColor: Colors.red,
-                    );
-                    return;
-                  }
-                  if (password == null) {
-                    Fluttertoast.showToast(
-                      msg: 'Please enter the password',
-                      backgroundColor: Colors.red,
-                    );
-                    return;
-                  }
-                  if (password!.isEmpty) {
-                    Fluttertoast.showToast(
-                      msg: 'Please enter the password',
-                      backgroundColor: Colors.red,
-                    );
-                    return;
-                  }
-
-                  if (!(password == password2)) {
-                    Fluttertoast.showToast(
-                      msg: 'Passwords must be same',
-                      backgroundColor: Colors.red,
-                    );
-                    return;
-                  }
-                },
-                child: Container(
-                  height: 45,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Color(0XFF162D3A),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Sign Up',
-                      style: TextStyle(color: Colors.white),
+    return Consumer<AppAuthProvider>(
+      builder: (context, authProvider, child) {
+        return Scaffold(
+          appBar: AppBar(title: Text('Sign up', style: kHeadingTextStyle1)),
+          body: Padding(
+            padding: const EdgeInsets.all(24),
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    // SizedBox(height: 10),
+                    //Image
+                    Image.asset(
+                      "assets/app_logo.png",
+                      fit: BoxFit.contain,
+                      width: double.infinity,
+                      height: 100,
                     ),
-                  ),
-                ),
-              ),
-
-              SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Already have an account?", style: kBodyTextStyle),
-                  SizedBox(width: 5),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      'Login',
-                      style: kBodyTextStyle.copyWith(
-                        color: AppColors.themeColor,
+                    SizedBox(height: 27),
+                    //welcome back
+                    Text(
+                      "Welcome  👋",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 24,
                       ),
                     ),
-                  ),
-                ],
+                    //today is new day
+                    Text("Please enter your details to continue"),
+                    SizedBox(height: 20),
+                    Text('Name'),
+                    SizedBox(height: 5),
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        hintText: "Please enter your name",
+                        hintStyle: TextStyle(color: Color(0XFF8897AD)),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(color: Color(0XFFD4D7E3)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(color: Color(0XFF1D4AE9)),
+                        ),
+                      ),
+                      validator: (name) {
+                        if (_nameController.text.isEmpty) {
+                          return 'Please enter your name';
+                        }
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    Text('Email'),
+                    SizedBox(height: 5),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        hintText: "Please enter your email",
+                        hintStyle: TextStyle(color: Color(0XFF8897AD)),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(color: Color(0XFFD4D7E3)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(color: Color(0XFF1D4AE9)),
+                        ),
+                      ),
+                      validator: (email) {
+                        final emailRegex = RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+                        );
+                        final isValidEmail = emailRegex.hasMatch(
+                          _emailController.text,
+                        );
+                        if (!isValidEmail) {
+                          return 'Please enter a valid email address';
+                        }
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    Text('Password'),
+                    SizedBox(height: 5),
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: hidePassword,
+                      decoration: InputDecoration(
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            hidePassword = !hidePassword;
+                            setState(() {});
+                          },
+                          child: hidePassword
+                              ? Icon(Icons.visibility_off)
+                              : Icon(Icons.visibility),
+                        ),
+                        hintText: "Please enter your password",
+                        hintStyle: TextStyle(color: Color(0XFF8897AD)),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(color: Color(0XFFD4D7E3)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(color: Color(0XFF1D4AE9)),
+                        ),
+                      ),
+                      validator: (password1) {
+                        if (_passwordController.text.isEmpty) {
+                          return 'Please enter the password';
+                        }
+
+                        if (_passwordController.text.length < 6) {
+                          return 'Password length must be greater than 6';
+                        }
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    Text('Confirm Password'),
+                    SizedBox(height: 5),
+                    TextFormField(
+                      controller: _password2Controller,
+                      obscureText: hidePassword2,
+                      decoration: InputDecoration(
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            hidePassword2 = !hidePassword2;
+                            setState(() {});
+                          },
+                          child: hidePassword2
+                              ? Icon(Icons.visibility_off)
+                              : Icon(Icons.visibility),
+                        ),
+                        hintText: "Confirm your password",
+                        hintStyle: TextStyle(color: Color(0XFF8897AD)),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(color: Color(0XFFD4D7E3)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(color: Color(0XFF1D4AE9)),
+                        ),
+                      ),
+                      validator: (_) {
+                        if (_password2Controller.text.isEmpty) {
+                          return 'Please enter the second password';
+                        }
+
+                        if (_passwordController.text.length < 6) {
+                          return 'Password length must be greater than 6';
+                        }
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        if (_passwordController.text !=
+                            _password2Controller.text) {
+                          Fluttertoast.showToast(msg: 'Passwords must be same');
+                          return;
+                        }
+
+                        if (_formKey.currentState!.validate()) {
+                          authProvider.signUpUser(
+                            email: _emailController.text.trim(),
+                            password: _passwordController.text,
+                          );
+                        }
+                      },
+                      child: Container(
+                        height: 45,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Color(0XFF162D3A),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Sign Up',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Already have an account?", style: kBodyTextStyle),
+                        SizedBox(width: 5),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            'Login',
+                            style: kBodyTextStyle.copyWith(
+                              color: AppColors.themeColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taski/constants/app_colors.dart';
@@ -22,6 +23,17 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () async {
+      //     var userAccount = await FirebaseAuth.instance
+      //         .signInWithEmailAndPassword(
+      //           email: 'samuel@vrittechnologies.com',
+      //           password: '1234567',
+      //         );
+      //
+      //     print(userAccount.user?.email);
+      //   },
+      // ),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: SingleChildScrollView(
