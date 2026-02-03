@@ -1,11 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-<<<<<<< Updated upstream
 
 import '../models/task_model.dart';
-=======
-import 'package:taski/models/task_model.dart';
->>>>>>> Stashed changes
 
 class TaskProvider extends ChangeNotifier {
   List<TaskModel> allTasks = [];

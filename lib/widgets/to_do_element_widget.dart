@@ -4,10 +4,6 @@ import 'package:taski/constants/app_colors.dart';
 import 'package:taski/constants/app_constants.dart';
 import 'package:taski/models/task_model.dart';
 import 'package:taski/providers/task_provider.dart';
-<<<<<<< Updated upstream
-=======
-import 'package:taski/models/task_model.dart';
->>>>>>> Stashed changes
 
 class TodoElementWidget extends StatelessWidget {
   const TodoElementWidget({required this.task, super.key});
