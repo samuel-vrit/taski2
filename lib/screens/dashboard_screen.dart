@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:taski/constants/app_colors.dart';
+import 'package:taski/providers/auth_provider.dart';
 import 'package:taski/screens/done_screen.dart';
 import 'package:taski/screens/home_screen.dart';
 import 'package:taski/screens/login_screen.dart';
@@ -90,7 +92,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: false,
       actions: [
         Text(
-          'John',
+          context.watch<AppAuthProvider>().userData?.name ?? '',
           style: GoogleFonts.urbanist(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -99,6 +101,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         SizedBox(width: 12),
         GestureDetector(
           onTap: () {
+            context.read<AppAuthProvider>().signOut();
+
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => LoginScreen()),

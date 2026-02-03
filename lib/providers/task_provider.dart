@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+<<<<<<< Updated upstream
 
 import '../models/task_model.dart';
+=======
+import 'package:taski/models/task_model.dart';
+>>>>>>> Stashed changes
 
 class TaskProvider extends ChangeNotifier {
   List<TaskModel> allTasks = [];
@@ -9,7 +14,7 @@ class TaskProvider extends ChangeNotifier {
   List<TaskModel> get doneTasks => allTasks.where((t) => t.isDone).toList();
 
   //add new task with title and description
-  void addTask({required String title, String? description}) {
+  void addTask({required String title, String? description}) async {
     var newTask = TaskModel(
       id: DateTime.now()
           .millisecondsSinceEpoch, // this assign unique integer to every new task
@@ -18,7 +23,8 @@ class TaskProvider extends ChangeNotifier {
       isDone:
           false, // initially the task is not completed so it is set to false
     );
-    allTasks.add(newTask); // add created task
+
+    // allTasks.add(newTask); // add created task
     notifyListeners();
   }
 
