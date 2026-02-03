@@ -1,17 +1,44 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../models/task_model.dart';
 
 class TaskProvider extends ChangeNotifier {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   List<TaskModel> allTasks = [];
   List<TaskModel> filteredTasks = [];
 
   List<TaskModel> get doneTasks => allTasks.where((t) => t.isDone).toList();
 
+  Future fetchAllTask() async {
+    allTasks.clear();
+    var querySnapshot = await _firestore
+        .collection('allTasks')
+        .where("createdBy", isEqualTo: _auth.currentUser!.email!)
+        .get();
+
+    for (var doc in querySnapshot.docs) {
+      TaskModel docAsTaskModel = TaskModel.fromJson(doc.data());
+      allTasks.add(docAsTaskModel);
+    }
+
+    // allTasks = querySnapshot.docs
+    //     .map((doc) => TaskModel.fromJson(doc.data()))
+    //     .where((task) => task.createdBy == _auth.currentUser!.email!)
+    //     .toList();
+
+    notifyListeners();
+  }
+
   //add new task with title and description
   void addTask({required String title, String? description}) async {
     var newTask = TaskModel(
+      createdBy: _auth.currentUser!.email!,
       id: DateTime.now()
           .millisecondsSinceEpoch, // this assign unique integer to every new task
       title: title,
@@ -20,7 +47,12 @@ class TaskProvider extends ChangeNotifier {
           false, // initially the task is not completed so it is set to false
     );
 
-    // allTasks.add(newTask); // add created task
+    await _firestore
+        .collection('allTasks')
+        .doc(newTask.id.toString())
+        .set(newTask.toJson());
+
+    allTasks.add(newTask); // add created task
     notifyListeners();
   }
 
@@ -62,15 +94,32 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  deleteTaskById(int taskId) {
-    allTasks.removeWhere((t) => t.id == taskId);
-    filteredTasks.removeWhere((t) => t.id == taskId);
+  deleteTaskById(int taskId) async {
+    // allTasks.removeWhere((t) => t.id == taskId);
+    // filteredTasks.removeWhere((t) => t.id == taskId);
+    await _firestore.collection("allTasks").doc(taskId.toString()).delete();
+    fetchAllTask();
     notifyListeners();
   }
 
   // delete all done task
-  deleteDoneTasks() {
-    allTasks.removeWhere((t) => t.isDone);
+  deleteDoneTasks() async {
+    // var collectionSnapShot =    await _firestore.collection('allTasks').where("createdBy",isEqualTo: _auth.currentUser!.email!).get();
+    //
+    //   for(var doc in collectionSnapShot.docs){
+    //
+
+    for (var task in doneTasks) {
+      await _firestore.collection("allTasks").doc(task.id.toString()).delete();
+    }
+    fetchAllTask();
+
+    notifyListeners();
+  }
+
+  invalidate() {
+    allTasks.clear();
+    filteredTasks.clear();
     notifyListeners();
   }
 }

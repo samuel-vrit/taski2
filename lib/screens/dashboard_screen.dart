@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:taski/constants/app_colors.dart';
 import 'package:taski/providers/auth_provider.dart';
+import 'package:taski/providers/task_provider.dart';
 import 'package:taski/screens/done_screen.dart';
 import 'package:taski/screens/home_screen.dart';
 import 'package:taski/screens/login_screen.dart';
@@ -20,6 +21,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int currentIndex = 0;
 
   List screens = [HomeScreen(), HomeScreen(), SearchScreen(), DoneScreen()];
+
+  @override
+  void initState() {
+    init();
+    super.initState();
+  }
+
+  init() async {
+    context.read<TaskProvider>().fetchAllTask();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +113,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         GestureDetector(
           onTap: () {
             context.read<AppAuthProvider>().signOut();
-
+            context.read<TaskProvider>().invalidate();
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => LoginScreen()),

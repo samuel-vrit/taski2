@@ -8,6 +8,8 @@ import 'package:taski/screens/dashboard_screen.dart';
 import 'package:taski/screens/login_screen.dart';
 import 'package:taski/screens/onboarding_screen.dart';
 
+import '../providers/auth_provider.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -31,6 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
     }
 
     if (isLoggedIn) {
+      if (mounted) await context.read<AppAuthProvider>().fetchUserData();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => DashboardScreen()),

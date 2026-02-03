@@ -8,6 +8,7 @@ import 'package:taski/screens/dashboard_screen.dart';
 
 class AppAuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   bool get isLoggedIn => _auth.currentUser != null;
 
@@ -30,10 +31,7 @@ class AppAuthProvider extends ChangeNotifier {
 
         var userDataAsJson = userData!.toJson();
 
-        await FirebaseFirestore.instance
-            .collection('allUsers')
-            .doc(email)
-            .set(userDataAsJson);
+        await _firestore.collection('allUsers').doc(email).set(userDataAsJson);
 
         Navigator.pushReplacement(
           context,
@@ -77,31 +75,21 @@ class AppAuthProvider extends ChangeNotifier {
       );
 
       if (userCredential.user != null) {
-        var userDataAsJson = await FirebaseFirestore.instance
-            .collection('allUsers')
-            .doc(email)
-            .get();
+        await fetchUserData();
 
-        if (userDataAsJson.exists) {
-          userData = UserModel.fromJson(
-            userDataAsJson.data() as Map<String, dynamic>,
-          );
-          notifyListeners();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => DashboardScreen()),
+        );
 
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => DashboardScreen()),
-          );
-        }
-      } else {
         Fluttertoast.showToast(
-          msg: 'Problem occurred while signing in',
-          backgroundColor: AppColors.error,
+          msg: 'Sign in successfully',
+          backgroundColor: AppColors.success,
         );
       }
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(
-        msg: e.message ?? 'Authentication error occurred',
+        msg: e.message ?? 'Sign in error occurred',
         backgroundColor: AppColors.error,
       );
     } catch (e) {
@@ -112,7 +100,29 @@ class AppAuthProvider extends ChangeNotifier {
     }
   }
 
+  Future fetchUserData() async {
+    try {
+      var userDataSnapshot = await _firestore
+          .collection('allUsers')
+          .doc(_auth.currentUser!.email)
+          .get();
+
+      if (userDataSnapshot.exists) {
+        var userDataAsJson = userDataSnapshot.data() as Map<String, dynamic>;
+        userData = UserModel.fromJson(userDataAsJson);
+        notifyListeners();
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        backgroundColor: AppColors.error,
+      );
+    }
+  }
+
   signOut() async {
+    userData = null;
     await _auth.signOut();
+    notifyListeners();
   }
 }
