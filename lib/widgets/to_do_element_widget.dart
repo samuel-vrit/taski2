@@ -24,7 +24,7 @@ class TodoElementWidget extends StatelessWidget {
         value: task.isDone,
         side: BorderSide(color: Colors.grey, width: 2),
         onChanged: (val) {
-          context.read<TaskProvider>().toggleDone(task.id);
+          context.read<TaskProvider>().toggleDone(task.id, task.isDone);
         },
       ),
       title: Text(task.title, style: kBodyTextStyle),

@@ -3,19 +3,24 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:taski/constants/app_colors.dart';
 
 import '../models/task_model.dart';
 
 class TaskProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   List<TaskModel> allTasks = [];
   List<TaskModel> filteredTasks = [];
-
   List<TaskModel> get doneTasks => allTasks.where((t) => t.isDone).toList();
 
+  bool fetchStatus = false;
+
   Future fetchAllTask() async {
+    fetchStatus = true;
+    notifyListeners();
+
     allTasks.clear();
     var querySnapshot = await _firestore
         .collection('allTasks')
@@ -32,6 +37,7 @@ class TaskProvider extends ChangeNotifier {
     //     .where((task) => task.createdBy == _auth.currentUser!.email!)
     //     .toList();
 
+    fetchStatus = false;
     notifyListeners();
   }
 
@@ -56,17 +62,37 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  toggleDone(int taskId) {
-    //first check if the task exists in allTasks list. If it does not exist in allTasks then it will return -1 (indexWhere returns -1)
+  toggleDone(int taskId, bool currentStatus) async {
     final index = allTasks.indexWhere((t) => t.id == taskId);
-    final filterTaskIndex = filteredTasks.indexWhere((t) => t.id == taskId);
-    //if index is not  -1, then allTasks contains the task
-    if (index != -1) {
-      final previousStatus = allTasks[index].isDone;
-      allTasks[index] = allTasks[index].copyWith(isDone: !previousStatus);
+    //first check if the task exists in allTasks list. If it does not exist in allTasks then it will return -1 (indexWhere returns -1)
+    if (index == -1) {
+      Fluttertoast.showToast(
+        msg: 'Could not find task',
+        backgroundColor: AppColors.error,
+      );
+      return;
+    }
+
+    final original = allTasks[index];
+
+    allTasks[index] = original.copyWith(isDone: !original.isDone);
+    notifyListeners();
+
+    try {
+      await _firestore.collection('allTasks').doc(taskId.toString()).update({
+        "isDone": !currentStatus,
+      });
+    } catch (e) {
+      allTasks[index] = original;
+      Fluttertoast.showToast(
+        msg: 'Could not change status',
+        backgroundColor: AppColors.error,
+      );
+    } finally {
       notifyListeners();
     }
 
+    int filterTaskIndex = filteredTasks.indexWhere((t) => t.id == taskId);
     //toggle the task in filteredTasks list also
     //if filterTaskIndex is -1, then filteredTasks does not contain the task, so skip
     if (filterTaskIndex != -1) {

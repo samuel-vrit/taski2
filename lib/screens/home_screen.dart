@@ -13,54 +13,65 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final allTasks = context.watch<TaskProvider>().allTasks;
-    final allTasks = Provider.of<TaskProvider>(context).allTasks;
+    // final allTasks = Provider.of<TaskProvider>(context).allTasks;
+    //
+    // final doneTasks = context.watch<TaskProvider>().doneTasks;
+    return Consumer<TaskProvider>(
+      builder: (context, taskProvider, child) {
+        return Scaffold(
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
 
-    final doneTasks = context.watch<TaskProvider>().doneTasks;
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(text: 'Welcome, ', style: kHeadingTextStyle1),
-                    TextSpan(
-                      text: 'John',
-                      style: kHeadingTextStyle1.copyWith(
-                        color: AppColors.themeColor,
-                      ),
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(text: 'Welcome, ', style: kHeadingTextStyle1),
+                        TextSpan(
+                          text: 'John',
+                          style: kHeadingTextStyle1.copyWith(
+                            color: AppColors.themeColor,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    'You’ve got ${taskProvider.allTasks.length - taskProvider.doneTasks.length} tasks to do.',
+                    style: GoogleFonts.urbanist(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 16,
+                      color: AppColors.themeColor,
+                    ),
+                  ),
+                  SizedBox(height: 32),
+                  taskProvider.fetchStatus
+                      ? Expanded(
+                          child: Center(child: CircularProgressIndicator()),
+                        )
+                      : Expanded(
+                          child: ListView.separated(
+                            itemCount: taskProvider.allTasks.length,
+                            separatorBuilder: (_, __) {
+                              return SizedBox(height: 16);
+                            },
+                            itemBuilder: (context, index) {
+                              return TodoElementWidget(
+                                task: taskProvider.allTasks[index],
+                              );
+                            },
+                          ),
+                        ),
+                ],
               ),
-              SizedBox(height: 5),
-              Text(
-                'You’ve got ${allTasks.length - doneTasks.length} tasks to do.',
-                style: GoogleFonts.urbanist(
-                  fontWeight: FontWeight.normal,
-                  fontSize: 16,
-                  color: AppColors.themeColor,
-                ),
-              ),
-              SizedBox(height: 32),
-              Expanded(
-                child: ListView.separated(
-                  itemCount: allTasks.length,
-                  separatorBuilder: (_, __) {
-                    return SizedBox(height: 16);
-                  },
-                  itemBuilder: (context, index) {
-                    return TodoElementWidget(task: allTasks[index]);
-                  },
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
