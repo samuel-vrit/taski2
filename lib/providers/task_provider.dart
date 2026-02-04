@@ -112,6 +112,7 @@ class TaskProvider extends ChangeNotifier {
     for (var task in doneTasks) {
       await _firestore.collection("allTasks").doc(task.id.toString()).delete();
     }
+
     fetchAllTask();
 
     notifyListeners();
