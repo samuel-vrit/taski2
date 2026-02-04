@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:taski/constants/app_colors.dart';
 import 'package:taski/constants/app_constants.dart';
 import 'package:taski/providers/task_provider.dart';
-import 'package:taski/utils/task_model.dart';
 
 class AddTaskSheet extends StatefulWidget {
   const AddTaskSheet({super.key});

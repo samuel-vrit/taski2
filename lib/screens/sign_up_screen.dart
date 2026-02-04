@@ -31,9 +31,19 @@ class _SignupScreenState extends State<SignupScreen> {
   bool hidePassword2 = true;
 
   @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _password2Controller.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<AppAuthProvider>(
-      builder: (context, authProvider, child) {
+      builder: (_, authProvider, child) {
         return Scaffold(
           appBar: AppBar(title: Text('Sign up', style: kHeadingTextStyle1)),
           body: Padding(
@@ -201,8 +211,10 @@ class _SignupScreenState extends State<SignupScreen> {
 
                         if (_formKey.currentState!.validate()) {
                           authProvider.signUpUser(
+                            name:_nameController.text,
                             email: _emailController.text.trim(),
                             password: _passwordController.text,
+                            context: context,
                           );
                         }
                       },

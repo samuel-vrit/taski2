@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:taski/constants/app_colors.dart';
 import 'package:taski/constants/app_constants.dart';
+import 'package:taski/models/task_model.dart';
 import 'package:taski/providers/task_provider.dart';
-import 'package:taski/utils/task_model.dart';
 
 class TodoElementWidget extends StatelessWidget {
   const TodoElementWidget({required this.task, super.key});

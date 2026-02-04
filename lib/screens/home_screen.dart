@@ -3,10 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:taski/constants/app_colors.dart';
 import 'package:taski/providers/task_provider.dart';
-import 'package:taski/utils/tasks.dart';
-import 'package:taski/widgets/to_do_element_widget.dart';
 
 import '../constants/app_constants.dart';
+import '../widgets/to_do_element_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:taski/constants/app_colors.dart';
 import 'package:taski/constants/app_constants.dart';
 import 'package:taski/providers/task_provider.dart';
-import 'package:taski/utils/task_model.dart';
+import 'package:taski/models/task_model.dart';
 
 class DoneScreen extends StatelessWidget {
   const DoneScreen({super.key});
