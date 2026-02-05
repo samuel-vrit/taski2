@@ -29,7 +29,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   init() async {
-    context.read<TaskProvider>().fetchAllTask();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<TaskProvider>().fetchAllTask();
+    });
   }
 
   @override

@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.taski</string>
+	<string>com.samuelthapamagar.taski</string>
 	<key>PROJECT_ID</key>
 	<string>taski2-52abc</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:561781217644:ios:23319a7f82ee63a3527b49</string>
+	<string>1:561781217644:ios:59a05f0419d6c117527b49</string>
 </dict>
 </plist>

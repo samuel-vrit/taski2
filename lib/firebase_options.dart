@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyC3lGFXiHhFB7ISrjmzOiPzasZh8eSbW8o',
-    appId: '1:561781217644:android:63a282f590db277f527b49',
+    appId: '1:561781217644:android:065bf5702d840a73527b49',
     messagingSenderId: '561781217644',
     projectId: 'taski2-52abc',
     storageBucket: 'taski2-52abc.firebasestorage.app',
@@ -60,11 +60,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAIoWAtCbQQjihF2M7OQXMEzaX_Jgn1W_k',
-    appId: '1:561781217644:ios:23319a7f82ee63a3527b49',
+    appId: '1:561781217644:ios:59a05f0419d6c117527b49',
     messagingSenderId: '561781217644',
     projectId: 'taski2-52abc',
     storageBucket: 'taski2-52abc.firebasestorage.app',
-    iosBundleId: 'com.example.taski',
+    iosBundleId: 'com.samuelthapamagar.taski',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
